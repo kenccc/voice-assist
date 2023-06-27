@@ -4,7 +4,8 @@ import pyttsx3 as tts
 import tkinter as tk
 from tkinter import *
 import webbrowser
-import time 
+import wikipedia
+import os 
 
 root = Tk()
 root.geometry = "800x600"
@@ -52,12 +53,32 @@ def start():
     query = recognize().lower()
 
 #commands
-    if "search" in query:
-        query = query.replace("search ","")
+    try:
+        if "search" in query:
+            query = query.replace("search ","")
+            webbrowser.open(google+query)
+        if "hello" or "hi" in query:
+           say("Hello how may I help you?")
+        if "stop" or "shut up" in query:
+           say("Okay, shutting down")  
+           quit()
+        if "Wikipedia" in query:
+           query = query.replace("wikipedia ","")
+           sum = wikipedia.summary(query)
+           say("according to wikipedia "+sum)
+           T.delete("1.0",END)
+           T.insert(tk.END, f"According to wikipedia {sum}")
+        if "wiki" in query:
+           query = query.replace("wiki ","")
+           sum = wikipedia.summary(query)
+           say("according to wikipedia "+sum)
+           T.delete("1.0",END)
+           T.insert(tk.END, f"According to wikipedia {sum}")
+        if  "turn off computer" in query:
+           os.system("shut down -s")
+    except:
+        say(f"Searching {query}")
         webbrowser.open(google+query)
-    if "hello" or "hi" in query:
-        say("Hello how may I help you?")
-        start()
 
 listen_btn = Button(master=root,
                     text="Start",
